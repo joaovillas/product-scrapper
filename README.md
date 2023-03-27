@@ -35,10 +35,10 @@ And success  🚀 you're ready to run
 #### If you don't have docker installed and don't want to use you can do those steps
 ** Make Sure you have an database working to connect** 
 
-````
-DATABASE_URL="postgresql://{DATABASE_USERNAME}:{DATABASE_PASSWORD}@{DATABASE_IP}:5432/{DATABASE_NAME}?schema=public"
-
 ```
+DATABASE_URL="postgresql://{DATABASE_USERNAME}:{DATABASE_PASSWORD}@{DATABASE_IP}:5432/{DATABASE_NAME}?schema=public"
+```
+
 ```
 yarn install or npm install
 yarn prisma:generate
