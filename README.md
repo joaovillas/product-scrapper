@@ -2,6 +2,7 @@
 
 Hello there, this is a project to company [Pelando](https://beta.pelando.com.br/destaques) and the challenge is for creating an service to crawl a page for given URL
 
+This is my [decision](https://github.com/joaovillas/product-scrapper/blob/main/docs/decision.md)
 #### For simplify the project only two websites are allowed:
 * [Pontofrio](https://www.pontofrio.com.br/)
 * [Centauro](https://www.centauro.com.br/)
