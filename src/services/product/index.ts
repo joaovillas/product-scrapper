@@ -13,7 +13,7 @@ const DAYS_IN_HOURS = 1000 * 3600;
 export const getProduct = async (product: ProductRequest) => {
   const url = getDomainFromURL(product.url);
   verifyAllowedUrl(url);
-  console.log(url);
+
   const existentProduct = await getProductOnDatabase(product.url);
 
   if (existentProduct && isProductUpdated(existentProduct)) {
