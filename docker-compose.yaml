@@ -11,7 +11,7 @@ services:
       - /app/prisma/local
     environment:
       - SERVER_PORT=3000
-    command: sh -c "sleep 20s ;yarn prisma:up ;yarn dev"
+    command: sh -c "sleep 20s ;yarn prisma:up ;yarn start"
     depends_on:
       - db
   
