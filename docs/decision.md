@@ -6,7 +6,7 @@ In a large company as Pelando, that every day scrap thousands of websites, we ha
 
 This is my data flow I decided to go through, to simplify my life at coding this challenge.
 
-![Diagram]( ./images/diagram.svg "Title")
+![Diagram]( ./images/BPMN.png "Title")
 
 
 ## Dreaming architecture in my humble opinion
