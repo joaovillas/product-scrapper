@@ -1,7 +1,6 @@
 import { api } from "../../config/axios";
 import { CrawlerProduct } from "../../types/Crawler";
 import { CentauroPrice, CentauroResponse } from "../../types/Crawler/centauro";
-import { sanitizeHTMLTags } from "../../utils/text";
 
 const apiUrl = "https://apigateway.centauro.com.br/ecommerce/v4.3/produtos";
 
@@ -31,22 +30,26 @@ const getPrice = (precos: CentauroPrice[], model: string) => {
 };
 
 export const getContent = async (url: string) => {
-  const loadedUrl = new URL(url);
-  const pathname = loadedUrl.pathname;
-  const model = getModelFromPathName(pathname);
-  const response = await api.get<CentauroResponse>(
-    `${apiUrl}?codigoModelo=${pathname}`
-  );
+  try {
+    const loadedUrl = new URL(url);
+    const pathname = loadedUrl.pathname;
+    const model = getModelFromPathName(pathname);
+    const response = await api.get<CentauroResponse>(
+      `${apiUrl}?codigoModelo=${pathname}`
+    );
 
-  const { informacoes, imagens, precos } = response.data;
+    const { informacoes, imagens, precos } = response.data;
 
-  const product: CrawlerProduct = {
-    url,
-    title: informacoes.nome,
-    image: imagens[0].urls[0].url,
-    description: sanitizeHTMLTags(informacoes.descricao),
-    price: getPrice(precos, model),
-  };
+    const product: CrawlerProduct = {
+      url,
+      title: informacoes.nome,
+      image: imagens[0].urls[0].url,
+      description: informacoes.descricao,
+      price: getPrice(precos, model),
+    };
 
-  return product;
+    return product;
+  } catch (error) {
+    throw new Error("[Crawler Error] - Product not found");
+  }
 };
