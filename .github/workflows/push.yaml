@@ -9,7 +9,7 @@ jobs:
     name: build process
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@main
+      - uses: actions/checkout@v3
 
       - name: npm install
         uses: actions/npm@main
@@ -20,5 +20,4 @@ jobs:
         uses: actions/npm@main
         with:
           args: run prisma:generate
-      
       
