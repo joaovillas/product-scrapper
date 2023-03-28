@@ -4,7 +4,7 @@ import cors from "cors";
 import { serve, setup } from "swagger-ui-express";
 import { swaggerDocument } from "./config/swagger";
 
-const PORT = process.env.SERVER_PORT || 3000;
+const PORT = process.env.PORT || 3000;
 
 const app = express();
 

@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY . .
 
-ENV SERVER_PORT=3000
+ENV PORT=3000
 ENV DATABASE_URL="postgresql://postgres:postgres@db:5432/pelandodb?schema=public"
 RUN npm install 
 
