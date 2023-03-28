@@ -1,0 +1,24 @@
+name: npm build, lint, test and publish
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: build process
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@main
+
+      - name: npm install
+        uses: actions/npm@main
+        with:
+          args: install
+
+      - name: prisma build
+        uses: actions/npm@main
+        with:
+          args: run prisma:generate
+      
+      
