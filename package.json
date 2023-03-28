@@ -19,7 +19,8 @@
     "prisma:generate": "prisma generate",
     "prisma:studio": "prisma studio",
     "prisma:up": "prisma migrate deploy",
-    "prisma:migrate": "prisma migrate dev --name"
+    "prisma:migrate": "prisma migrate dev --name",
+    "vercel-build": "yarn prisma:generate"
   },
   "dependencies": {
     "@prisma/client": "^4.11.0",

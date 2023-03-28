@@ -19,10 +19,6 @@ jobs:
         uses: actions/setup-node@v3
       - run: npm install
 
-      - name: Generate prisma local config
-        uses: actions/setup-node@v3
-      - run: npm run prisma:generate
-
       - name: Update Database Migration
         uses: actions/setup-node@v3
       - run: npm run prisma:up
