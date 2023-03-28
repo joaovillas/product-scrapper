@@ -26,6 +26,8 @@ jobs:
       - name: Update Database Migration
         uses: actions/setup-node@v3
       - run: npm run prisma:up
+        env: 
+          DATABASE_URL: ${{secrets.DATABASE_URL}}
 
   deploy:
     needs: build
