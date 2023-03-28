@@ -3,6 +3,7 @@ import routes from "./routes";
 import cors from "cors";
 import { serve, setup } from "swagger-ui-express";
 import { swaggerDocument } from "./config/swagger";
+import prisma from "./config/prisma";
 
 const PORT = process.env.SERVER_PORT || 3000;
 
@@ -14,9 +15,10 @@ app.use(cors());
 app.use("/api", routes);
 app.use("/docs", serve, setup(swaggerDocument));
 
-app.get("/", (req, res) => {
+app.get("/", async (req, res) => {
+  const isConnected = await prisma.$queryRawUnsafe("SELECT 1");
   res.send({
-    health: true,
+    health: !!isConnected,
   });
 });
 
