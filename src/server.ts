@@ -20,6 +20,12 @@ app.get("/", async (req, res) => {
   });
 });
 
-app.listen(PORT, () => {
-  console.log(`⚡️[server]: Server is running at http://localhost:${PORT}`);
-});
+app.listen(
+  {
+    host: "0.0.0.0",
+    port: PORT,
+  },
+  () => {
+    console.log(`⚡️[server]: Server is running at http://localhost:${PORT}`);
+  }
+);
