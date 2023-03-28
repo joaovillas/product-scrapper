@@ -10,6 +10,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - name: Use Node.js
+
+      - name: Install Dependencies
         uses: actions/setup-node@v3
       - run: npm install
+
+      - name: Generate prisma local config
+        uses: actions/setup-node@v3
+      - run: npm run prisma:generate
+
