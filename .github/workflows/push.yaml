@@ -21,10 +21,10 @@ jobs:
 
       - name: Release Unit tests
         uses: actions/setup-node@v3
-        run: npm run test:unit
+      - run: npm run test:unit
 
       - name: Update Database Migration
         uses: actions/setup-node@v3
       - run: npm run prisma:up
-        env: 
+        env:
           DATABASE_URL: ${{secrets.DATABASE_URL}}
