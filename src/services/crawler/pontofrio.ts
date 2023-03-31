@@ -12,12 +12,11 @@ export const parseTitle = (title: string) => {
 export const getDescription = (content: string) => {
   const root = parse(content);
   const containers = root.getElementsByTagName("div");
-
   const description = containers.find(
     (container) => container.id === "product-description"
   );
 
-  if (!description) {
+  if (!description || !description.text) {
     throw new Error("[Crawler Error] - Description not found");
   }
 
@@ -39,13 +38,11 @@ export const getImage = (content: string) => {
     }
   });
 
-  const image = images[0].getAttribute("src");
-
-  if (!image) {
+  if (!images.length || !images[0].getAttribute("src")) {
     throw new Error("[Crawler Error] - Image not found");
   }
 
-  return image;
+  return images[0].getAttribute("src");
 };
 
 export const getPrice = async (productId: string) => {
@@ -53,7 +50,6 @@ export const getPrice = async (productId: string) => {
     const response = await api.get<PontoFrioPriceResponse>(
       `https://pdp-api.pontofrio.com.br/api/v2/sku/${productId}/price/source/PF`
     );
-
     const body = response.data.sellPrice;
 
     return body.priceValue;
@@ -68,9 +64,9 @@ export const getContent = async (url: string) => {
   const response = await api.get(url);
 
   const title = parseTitle(paths[1]);
-  const price = await getPrice(paths[3]);
   const description = getDescription(response.data);
   const image = getImage(response.data);
+  const price = await getPrice(paths[3]);
 
   const product: CrawlerProduct = {
     url,
