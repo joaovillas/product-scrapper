@@ -37,9 +37,7 @@ export const getContent = async (url: string) => {
     const response = await api.get<CentauroResponse>(
       `${apiUrl}?codigoModelo=${pathname}`
     );
-
     const { informacoes, imagens, precos } = response.data;
-
     const product: CrawlerProduct = {
       url,
       title: informacoes.nome,
@@ -50,6 +48,6 @@ export const getContent = async (url: string) => {
 
     return product;
   } catch (error) {
-    throw new Error("[Crawler Error] - Product not found");
+    throw error;
   }
 };
