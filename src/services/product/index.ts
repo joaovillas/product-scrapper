@@ -15,13 +15,11 @@ export const getProduct = async (product: ProductRequest) => {
   verifyAllowedUrl(url);
 
   const existentProduct = await getProductOnDatabase(product.url);
-
   if (existentProduct && isProductUpdated(existentProduct)) {
     return existentProduct;
   }
 
   const crawlerProduct = await getContent(product.url);
-
   if (!existentProduct) {
     return await createProduct(crawlerProduct);
   }
