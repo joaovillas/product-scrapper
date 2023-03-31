@@ -38,11 +38,11 @@ export const getImage = (content: string) => {
     }
   });
 
-  if (!images.length || !images[0].getAttribute("src")) {
+  if (!images.length) {
     throw new Error("[Crawler Error] - Image not found");
   }
 
-  return images[0].getAttribute("src");
+  return images[0].getAttribute("src") as string;
 };
 
 export const getPrice = async (productId: string) => {
