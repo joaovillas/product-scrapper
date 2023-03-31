@@ -22,12 +22,3 @@ jobs:
       - name: Release Unit tests
         uses: actions/setup-node@v3
       - run: npm run test:unit
-
-      - name: Update Database Migration
-        uses: actions/setup-node@v3
-      - run: npm run prisma:up
-        env:
-          DATABASE_URL: ${{secrets.DATABASE_URL}}
-
-      - name: Update Coverage Badge
-        uses: we-cli/coverage-badge-action@main
