@@ -23,7 +23,7 @@
     "prisma:up": "prisma migrate deploy",
     "prisma:migrate": "prisma migrate dev --name",
     "vercel-build": "yarn prisma:generate",
-    "test:unit": "vitest"
+    "test:unit": "vitest --run"
   },
   "dependencies": {
     "@prisma/client": "^4.11.0",

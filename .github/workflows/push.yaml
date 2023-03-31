@@ -19,6 +19,10 @@ jobs:
         uses: actions/setup-node@v3
       - run: npm install
 
+      - name: Release Unit tests
+        uses: actions/setup-node@v3
+        run: npm run test:unit
+
       - name: Update Database Migration
         uses: actions/setup-node@v3
       - run: npm run prisma:up
