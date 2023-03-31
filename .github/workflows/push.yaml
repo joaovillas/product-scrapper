@@ -28,3 +28,6 @@ jobs:
       - run: npm run prisma:up
         env:
           DATABASE_URL: ${{secrets.DATABASE_URL}}
+
+      - name: Update Coverage Badge
+        uses: we-cli/coverage-badge-action@main
