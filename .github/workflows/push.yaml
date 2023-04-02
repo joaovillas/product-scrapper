@@ -40,10 +40,6 @@ jobs:
       - name: Release Integration tests
         uses: actions/setup-node@v3
       - run: npm run test:integration
-      
-      - name: Update code coverage
-        run: npx update-badge
-      - uses: mikeal/publish-to-github-action@master
-        env:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-          BRANCH_NAME: 'test-coverage'
+
+      - name: Coveralls
+        uses: coverallsapp/github-action@v1
