@@ -39,7 +39,6 @@ jobs:
       - run: npm run test:integration
       
       - name: Update code coverage
-        run: npx update-badge
-      - uses: mikeal/publish-to-github-action@master
+        run: npx -p check-code-coverage set-gh-status
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
