@@ -3,6 +3,9 @@ import routes from "./routes";
 import cors from "cors";
 import { serve, setup } from "swagger-ui-express";
 import { swaggerDocument } from "./config/swagger";
+import { config } from "dotenv";
+
+config();
 
 const PORT = process.env.PORT || 3000;
 
