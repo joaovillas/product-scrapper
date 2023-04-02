@@ -24,7 +24,8 @@
     "prisma:up": "prisma migrate deploy",
     "prisma:migrate": "prisma migrate dev --name",
     "vercel-build": "yarn prisma:generate",
-    "test:unit": "vitest --run --coverage"
+    "test:unit": "vitest --run --coverage --config ./vitest.config.unit.ts",
+    "test:integration": "vitest --coverage --config ./vitest.config.integration.ts"
   },
   "dependencies": {
     "@prisma/client": "^4.11.0",
