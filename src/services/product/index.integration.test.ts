@@ -17,6 +17,8 @@ const product = {
   name: "SmartTV LED 50 Samsung 50RU7100 4K UHD 3 HDMI 2 USB WiFi Bluetooth Controle Remoto SmartThings Preto 2020",
 };
 
+console.log(process.env.DATABASE_URL);
+
 const crawlerResponse: CrawlerProduct = {
   price: 1000,
   description: product.description,
