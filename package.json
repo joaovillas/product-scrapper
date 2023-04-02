@@ -10,8 +10,8 @@
     "@types/swagger-jsdoc": "^6.0.1",
     "@types/swagger-ui-express": "^4.1.3",
     "@vitest/coverage-c8": "^0.29.8",
+    "dotenv-cli": "^7.1.0",
     "prisma": "^4.11.0",
-    "tsx": "^3.12.6",
     "vitest": "^0.29.8",
     "vitest-mock-extended": "^1.1.3"
   },
@@ -25,7 +25,10 @@
     "prisma:migrate": "prisma migrate dev --name",
     "vercel-build": "yarn prisma:generate",
     "test:unit": "vitest --run --coverage --config ./vitest.config.unit.ts",
-    "test:integration": "vitest --coverage --config ./vitest.config.integration.ts"
+    "test:integration": "run-s prepare:integration run:integration finish:integration",
+    "run:integration": "vitest --run --coverage --config ./vitest.config.integration.ts",
+    "prepare:integration": "dotenv -e .env.test yarn prisma:up",
+    "finish:integration": "dotenv -e .env.test yarn prisma migrate reset --force"
   },
   "dependencies": {
     "@prisma/client": "^4.11.0",
@@ -35,8 +38,10 @@
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "node-html-parser": "^6.1.5",
+    "npm-run-all": "^4.1.5",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^4.6.2",
+    "tsx": "^3.12.6",
     "typescript": "^5.0.2",
     "zod": "^3.21.4"
   }

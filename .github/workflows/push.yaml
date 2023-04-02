@@ -11,6 +11,20 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:12
+        env:
+          POSTGRES_USER: ${{secrets.PG_USER}}
+          POSTGRES_PASSWORD: ${{secrets.PG_PASS}}
+          POSTGRES_DB: ${{secrets.PG_DATABASE}}
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
       - uses: actions/checkout@v3
@@ -22,3 +36,11 @@ jobs:
       - name: Release Unit tests
         uses: actions/setup-node@v3
       - run: npm run test:unit
+
+      - name: Release Integration tests
+        uses: actions/setup-node@v3
+      - run: npm run test:integration
+        env:
+          DATABASE_URL: postgresql://${{secrets.PG_USER}}:${{secrets.PG_PASSWORD}}@postgres:5432/${{PG_DATABASE}}?schema=public
+          
+

@@ -1,12 +1,14 @@
-import { expect, describe, it, beforeEach, vi } from "vitest";
+import { expect, describe, it, beforeEach, vi, afterAll } from "vitest";
 import { getProduct } from "./";
 
-import prismaMock from "../../config/mocks/prisma";
 import { CrawlerProduct } from "../../types/Crawler";
+import { MD5 } from "crypto-js";
+import prisma from "../../config/prisma";
+import * as crawler from "../crawler";
 
 const product = {
-  id: "1",
-  url: "https://www.centauro.com.br/chuteira-society-umbro-acid-ii-adulto-947415.html#cor=31",
+  id: "1f38b6f81-c7b2-4090-ae8d-4dbbaa300d36",
+  url: "https://www.centauro.com.br",
   description:
     "SmartTV LED 50 Samsung 50RU7100 4K UHD 3 HDMI 2 USB WiFi Bluetooth Controle Remoto SmartThings Preto 2020",
   hash: "1",
@@ -23,21 +25,18 @@ const crawlerResponse: CrawlerProduct = {
   url: product.url,
 };
 
-vi.mock("../../config/prisma", () => ({
-  default: {
-    product: {
-      findFirst: vi.fn(),
-      update: vi.fn(),
-      create: vi.fn(),
-    },
+vi.mock("../crawler", () => ({
+  getContent: () => {
+    return crawlerResponse;
   },
 }));
 
-vi.mock("../crawler", () => ({
-  getContent: () => crawlerResponse,
-}));
-
 describe("Product Service", () => {
+  beforeEach(async () => {
+    await prisma.productPrice.deleteMany({});
+    await prisma.product.deleteMany({});
+  });
+
   it("Should throw error when url is not allowed", async () => {
     const url = "https://www.google.com";
     await expect(getProduct({ url })).rejects.toThrow(
@@ -45,67 +44,66 @@ describe("Product Service", () => {
     );
   });
 
-  it("Should return a product cached product", async () => {
-    const createSpy = vi.spyOn(prismaMock.product, "create");
-    const updateSpy = vi.spyOn(prismaMock.product, "update");
-
-    const productMock = {
-      ...product,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
-
-    prismaMock.product.findFirst.mockResolvedValue({ ...productMock });
+  it("Should insert product on database", async () => {
     const url = "https://www.centauro.com.br";
 
     const response = await getProduct({ url });
 
-    expect(response).toEqual(productMock);
-    expect(createSpy).toHaveBeenCalledTimes(0);
-    expect(updateSpy).toHaveBeenCalledTimes(0);
+    expect(response.hash).toEqual(
+      MD5(JSON.stringify(crawlerResponse)).toString()
+    );
   });
 
-  it("Should update a product when it is not cached", async () => {
-    const productMock = {
-      ...product,
-      createdAt: new Date("2021-01-01"),
-      updatedAt: new Date("2021-01-01"),
-    };
-
-    prismaMock.product.findFirst.mockResolvedValue({ ...productMock });
-
-    const spy = vi.spyOn(prismaMock.product, "update");
-
+  it("should return a product cached product", async () => {
     const url = "https://www.centauro.com.br";
 
-    await getProduct({ url });
+    const crawlerSpy = vi.spyOn(crawler, "getContent");
 
-    expect(spy).toHaveBeenCalledTimes(1);
+    const response1 = await getProduct({ url });
+    const response2 = await getProduct({ url });
+
+    expect(response1.hash).toEqual(response2.hash);
+    expect(response1.name).toEqual(response2.name);
+    expect(response1.productPrice).toEqual(response2.productPrice);
+    expect(response1.url).toEqual(response2.url);
+    expect(crawlerSpy).toHaveBeenCalledTimes(1);
   });
 
-  it("Should create product when it does not exist", async () => {
-    prismaMock.product.findFirst.mockResolvedValue(null);
-
-    const spy = vi.spyOn(prismaMock.product, "create");
-
+  it("Should update a product when the time is greater than 1 hour", async () => {
     const url = "https://www.centauro.com.br";
 
-    await getProduct({ url });
+    const previousCreatedAt = new Date("2021-01-01");
 
-    expect(spy).toHaveBeenCalledTimes(1);
-  });
+    const createdProduct = await prisma.product.create({
+      data: {
+        url,
+        hash: MD5(JSON.stringify(crawlerResponse + "2")).toString(),
+        name: crawlerResponse.title,
+        description: crawlerResponse.description,
+        image: crawlerResponse.image,
+        createdAt: previousCreatedAt,
+        updatedAt: previousCreatedAt,
+        productPrice: {
+          create: {
+            price: crawlerResponse.price,
+            createdAt: previousCreatedAt,
+            updatedAt: previousCreatedAt,
+          },
+        },
+      },
+      include: {
+        productPrice: true,
+      },
+    });
 
-  it("Should create product with correct price", async () => {
-    prismaMock.product.findFirst.mockResolvedValue(null);
+    const updateCachedProduct = await getProduct({ url });
 
-    const url = "https://www.centauro.com.br";
-
-    const spy = vi.spyOn(prismaMock.product, "create");
-
-    await getProduct({ url });
-
-    const productPrice = spy.mock.calls[0][0].data.productPrice?.create;
-
-    expect(productPrice).toEqual({ price: 1000 });
+    expect(updateCachedProduct.hash).toEqual(
+      MD5(JSON.stringify(crawlerResponse)).toString()
+    );
+    expect(createdProduct.id).toEqual(updateCachedProduct.id);
+    expect(createdProduct.productPrice.length).toBeLessThan(
+      updateCachedProduct.productPrice.length
+    );
   });
 });
