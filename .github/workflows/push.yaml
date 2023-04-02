@@ -41,6 +41,6 @@ jobs:
         uses: actions/setup-node@v3
       - run: npm run test:integration
         env:
-          DATABASE_URL: postgresql://${{secrets.PG_USER}}:${{secrets.PG_PASSWORD}}@postgres:5432/${{PG_DATABASE}}?schema=public
+          DATABASE_URL: "postgresql://${{secrets.PG_USER}}:${{secrets.PG_PASSWORD}}@postgres:5432/${{PG_DATABASE}}?schema=public"
           
 
