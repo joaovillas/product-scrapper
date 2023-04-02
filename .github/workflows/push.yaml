@@ -40,5 +40,6 @@ jobs:
       
       - name: Update code coverage
         run: npx -p check-code-coverage set-gh-status
+      - uses: mikeal/publish-to-github-action@main
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
