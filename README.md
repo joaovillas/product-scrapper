@@ -1,4 +1,7 @@
-## Product Scrapper
+![check-code-coverage](https://img.shields.io/badge/code--coverage-80%-brightgreen)
+
+
+## Product Scrapper ![check-code-coverage](https://img.shields.io/badge/code--coverage-98.76%25-brightgreen)
 
 Hello there, this is a project to company [Pelando](https://beta.pelando.com.br/destaques) and the challenge is for creating an service to crawl a page for given URL
 

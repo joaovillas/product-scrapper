@@ -36,3 +36,9 @@ jobs:
       - name: Release Integration tests
         uses: actions/setup-node@v3
       - run: npm run test:integration
+      
+      - name: Update code coverage
+        run: npx update-badge
+      - uses: mikael/publish-to-github-action@main
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
