@@ -26,7 +26,7 @@
     "vercel-build": "yarn prisma:generate",
     "test:unit": "vitest --run --coverage --config ./vitest.config.unit.ts",
     "test:integration": "run-s prepare:integration run:integration",
-    "run:integration": "vitest --run --coverage --config ./vitest.config.integration.ts",
+    "run:integration": "vitest --run --config ./vitest.config.integration.ts",
     "prepare:integration": "dotenv -e .env.test yarn prisma:up"
   },
   "dependencies": {
